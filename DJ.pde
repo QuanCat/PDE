@@ -19,7 +19,6 @@ AudioPlayer player2;
 float speedAdjust=1.0;
 
 
-
 void setup() {
   size(768,1024);
   imageMode(CENTER);
@@ -37,6 +36,7 @@ void setup() {
 void draw() {
   background(30); 
   imageMode(CENTER);
+  //cube();
   image(images[(int)currentFrame], width/2, images[0].height/2+margin, images[0].width, images[0].height);
   image(TV, width/2, TV.height/2+margin, TV.width, TV.height);
   deck1x = (width/2)-recordPlayer[0].width/2-(margin*10);
@@ -51,8 +51,9 @@ void draw() {
     ratio *= 2;
   }
    //control the color for the below part (speed)
-   fill(ratio * 127);
-   rect(0, height / 2, width, height / 2);
+   
+   fill(ratio * 200);
+   //rect(0, height / 2, width, height / 2);
 
   if (deck1Playing || deck2Playing) {
     
@@ -115,11 +116,46 @@ void mousePressed() {
 }
 
 void mouseDragged() {
+  
+  float red = map(mouseX, 0, width, 0, 255);
+  float blue = map(mouseY, 0, width, 0, 255);
+  float green = dist(mouseX,mouseY,width/2,height/2);
+  
+  float speed = dist(pmouseX, pmouseY, mouseX, mouseY);
+  float alpha = map(speed, 0, 20, 0, 10);
+  //println(alpha);
+  float lineWidth = map(speed, 0, 10, 10, 1);
+  lineWidth = constrain(lineWidth, 0, 10);
+  noStroke();
+  fill(0, alpha);
+  rect(width/2, height/2, width, height);
+  
+  stroke(red, green, blue, 255);
+  strokeWeight(lineWidth);
+  
+  //rect(mouseX, mouseY, speed, speed);
+  line(pmouseX, pmouseY,mouseX, mouseY);
+  brush1(mouseX, mouseY,speed, speed,lineWidth);
+  brush2(mouseX, mouseY,speed, speed,lineWidth);
+  brush3(mouseX, mouseY,speed, speed,lineWidth);
+  brush4(pmouseX, pmouseY,mouseX, mouseY,lineWidth);
+
+  brush5(pmouseX, pmouseY,mouseX, mouseY,lineWidth);
+  brush6(mouseX, mouseY,speed, speed,lineWidth);
+  brush7(pmouseX, pmouseY,mouseX, mouseY,lineWidth);
+  
+  if (mouseY > height/2) {  
+    speedAdjust = map(mouseX, 0, width, 0, 2);
+   
+  } 
+}
+
+/*void mouseDragged() {
    
  if (mouseY>height/2) {
   
    speedAdjust=map(mouseX,0,width,0,2);
    
  } 
-}
+}*/
 
